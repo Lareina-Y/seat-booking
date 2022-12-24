@@ -46,10 +46,10 @@
   }   
 ?>
 <main >
-    <h1>DCSSA | 2023春晚订票</h1>
-
-    <h6>若有任何问题请及时与官微联系，官方微信号：Dalhousie_DCSSA</h6>
-    <ul class="showcase">
+    <h2>DCSSA | 2023春晚订票</h2>
+    <h7>若有任何问题请及时与官微联系，官方微信号：Dalhousie_DCSSA</h7>
+    <section>
+    <ul class="showcase mt-2">
       <li>
         <div class="seat"></div>
         <small>Available</small>
@@ -125,6 +125,9 @@
      </tr>           
   </tbody>    
 </table>
+</section>
+
+<section>
     <p id="demo">You already seleted Seats: </p>
     <p class="text">
       You have selected <span id="count">0</span> seats for a price of
@@ -134,52 +137,53 @@
     <p></p>
     
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-secondary" onclick=resetClick()>Reset</button>
-<button type="button" class="btn btn-primary" id="submitButton" data-toggle="modal" data-target="#exampleModal" disabled>
-  Submit
-</button>
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-secondary" onclick=resetClick()>Reset</button>
+  <button type="button" class="btn btn-primary" id="submitButton" data-toggle="modal" data-target="#exampleModal" disabled>
+    Submit
+  </button>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-text" id="exampleModalLabel">Seat Booking</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-text" id="exampleModalLabel">Seat Booking</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="" class="" method="post">
+          <div class="modal-body">
+              <div class="modal-text mb-2" id="selected-seats">You already seleted Seats: </div>
+              <div class="modal-text mb-3">Total Price: <strong>$<span id="total-price">0</span></strong></div>
+              <div class="mb-3">
+                <input class="form-control" name="selectedSeats" type="hidden" id="hiddencontainer" required/>
+              </div>
+              <div class="mb-3">
+                  <input class="form-control" name="lname"  type="text" placeholder="Last Name" required>
+              </div>
+              <div class="mb-3">
+                  <input class="form-control" name="fname"  type="text" placeholder="Fist Name" required>
+              </div>
+              <div class="mb-3">
+                  <input type="email" class="form-control" name="email" placeholder="Email" required/>
+              </div>
+              <div class="mb-3">
+                  <input class="form-control" name="wechat"  type="text" placeholder="WeChat ID (Optional)">
+              </div>
+              <div class="mb-1 modal-text">* We'll never share your information with anyone else.</div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary" name='submit'>Submit</button>
+          </div>
+        </form>
       </div>
-      <form action="" class="" method="post">
-        <div class="modal-body">
-            <div class="modal-text mb-2" id="selected-seats">You already seleted Seats: </div>
-            <div class="modal-text mb-3">Total Price: <strong>$<span id="total-price">0</span></strong></div>
-            <div class="mb-3">
-              <input class="form-control" name="selectedSeats" type="hidden" id="hiddencontainer" required/>
-            </div>
-            <div class="mb-3">
-                <input class="form-control" name="lname"  type="text" placeholder="Last Name" required>
-            </div>
-            <div class="mb-3">
-                <input class="form-control" name="fname"  type="text" placeholder="Fist Name" required>
-            </div>
-            <div class="mb-3">
-                <input type="email" class="form-control" name="email" placeholder="Email" required/>
-            </div>
-            <div class="mb-3">
-                <input class="form-control" name="wechat"  type="text" placeholder="WeChat ID (Optional)">
-            </div>
-            <div class="mb-1 modal-text">* We'll never share your information with anyone else.</div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary" name='submit'>Submit</button>
-        </div>
-      </form>
     </div>
   </div>
-</div>
-
+</section>
+ 
 <?php
     require_once "includes/footer.php";
 ?>

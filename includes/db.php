@@ -12,6 +12,11 @@
 	$password = "root";
 	$dbname = "dcssa"; 
 
+	// $host = "db.cs.dal.ca";
+	// $username = "shiwen";
+	// $password = "tcKyJsxJqeX5BaMiEmeYjN2vf";
+	// $dbname = "shiwen"; 
+
 	$conn = new mysqli($host, $username, $password, $dbname);
 
 	if ($conn->connect_error) {

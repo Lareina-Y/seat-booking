@@ -20,12 +20,6 @@
             $seatSQL = "INSERT INTO `seats`(`seat_name`,`table_number`) VALUES ('". $name . "-" .($i+1)."','".$name."')";
             $insertSeat = $conn->query($seatSQL);
         }       
-        if (!$done) {
-            // header ("Location: upload.php?failure");
-            echo 'Something went wrong';
-            ob_end_flush();
-            die();
-        }
     }   
 ?>
 
