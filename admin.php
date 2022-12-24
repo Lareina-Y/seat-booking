@@ -1,6 +1,8 @@
 <?php
     require_once "includes/header.php";
 
+    $page = $_GET['tab'] ?? '';
+
     if(isset($_POST['create-table'])){
 
         // sanitize the input Data
@@ -34,48 +36,54 @@
 ?>
 <main>
 
-
-<section id="contact-section">
-<div class="container">
-    <div class="col-md-8 col-lg-9">
-      <form action="" class="form-contact contact_form" method="post" >
-            <div class="form-group">
-
-              <input class="form-control" name="tname" id="tname" type="text" placeholder="Table Name" required>
-
-            </div>
-          
-            <div class="form-group">
-
-              <input class="form-control" name="no-of-seats" id="no-of-seats" type="number" placeholder="Number of seats" value = "8" required>
-
-            </div>
-
-            <div class="form-group">
-
-              <input class="form-control" name="price" id="no-of-seats" type="number" placeholder="Price" value = "15" required>
-
-            </div>
-            <div class="form-group text-center">
-
-          <button type="submit" class="btn btn-primary" id="submit" name="create-table" >create</button>
-
-            </div>
-
-      </form>
-
-    </div>
-
+<h1>Admin</h1>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark showcase mb-5">
+  <a class="navbar-brand" href="">Navbar: </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item <?php echo ($page == "") ? "active" : ""; ?>">
+        <a class="nav-link" href="admin.php">Booking Lists</a>
+      </li>
+      <li class="nav-item <?php echo ($page == "create-table") ? "active" : ""; ?>">
+        <a class="nav-link" href="admin.php?tab=create-table">Create New Table</a>
+      </li>
+      <li class="nav-item">
+        <a class="btn btn-primary" href="index.php" role="button">Back to User Page</a>
+      </li>
+    </ul>
+    <?php
+      if($page == "") {
+    ?>
+    <!-- <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form> -->
+    <?php
+      }
+    ?>
   </div>
-
-</div>
-
-</section>
+</nav>
 
 
+<?php
+  
+  switch ($page) {
+    case 'create-table':
+      include 'includes/createTable.php';
+      break;
+    default:
+      include 'includes/bookingList.php';
+      break;
+  }
+
+?>
+  
 </main> 
 
 
-    <?php
+<?php
     require_once "includes/footer.php";
 ?>

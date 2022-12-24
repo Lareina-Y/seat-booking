@@ -1,19 +1,9 @@
 <?php
     require_once "includes/header.php";
-
-
     if(isset($_POST['submit'])){
 
-      $seletedSeatsString=sanitizeData($_POST["hiddencontainer"]);
+      $seletedSeatsString=sanitizeData($_POST['selectedSeats']);
       $seatsList = explode(',', $seletedSeatsString);
-      // echo '<pre>'; 
-      // print_r($seatsList); 
-      // echo '</pre>';
-      echo json_encode($seatsList);
-      $length = count($seatsList);
-      
-      echo "<div class=''>check: {$length}</div>";
-
        // sanitize the input Data
        $lname = sanitizeData($_POST['lname']);
        $fname = sanitizeData($_POST['fname']);
@@ -25,26 +15,42 @@
       date_default_timezone_set('Canada/Atlantic');
       $date = date("Y-m-d H:i:s");
 
-      // $insertSQL = "INSERT INTO `tables`(`table_number`, `no_of_seats`, `price`) VALUES ('".$name."','".$noOfSeats."','".$price ."')";
+      if ($seatsList !== [""]) {
+        foreach ( $seatsList as $seatName) {
+          
+          $checkExistSQL = "SELECT `seat_name`, `status` FROM `booking` WHERE `seat_name` = '{$seatName}'";
+          $checkExist = $conn->query($checkExistSQL);
 
-      // // (4) Execute query
-      // $done = $conn->query($insertSQL);
-
-      // for ($i = 0; $i <$noOfSeats; $i++) {
-      //     $seatSQL = "INSERT INTO `seats`(`seat_name`,`table_number`) VALUES ('". $name . "-" .($i+1)."','".$name."')";
-      //     $insertSeat = $conn->query($seatSQL);
-      // }       
-      // if (!$done) {
-      //     // Redirect the seller to the show=posted page.
-      //     header ("Location: upload.php?failure");
-      //     echo 'done for ' + $name;
-      //     ob_end_flush();
-      //     die();
-      // }
+          if ($checkExist->num_rows > 0){
+            $bookingExist = $checkExist->fetch_assoc();
+            if ($bookingExist['status'] == 1) {
+              $bookingExistStatus = 'Reserved !';
+            } else{
+              $bookingExistStatus = 'Occupied !';
+            }
+            echo "<div class='p-3 mb-2 bg-danger text-white'>{$bookingExist['seat_name']} already be {$bookingExistStatus}</div>";
+          } else {
+            $insertBookingSQL = "INSERT INTO `booking`(`seat_name`, `updateTime`, `lastName`, `firstName`, `email`, `weChat`) VALUES ('{$seatName}','{$date}','{$lname}','{$fname}','{$email}','{$wechat}')";
+            $upsateSeatStatusSQL = "UPDATE `seats` SET `status`= 1 WHERE `seat_name` = '{$seatName}'";
+            $addBooking = $conn->query($insertBookingSQL);
+            $upsateSeatStatus = $conn->query($upsateSeatStatusSQL);
+            if (!$addBooking || !$upsateSeatStatus) {
+              echo "<div class='showcase p-2 mb-2 bg-danger text-white'>Unsuccessfully book the Seat: {$seatName}, Something wrong!</div>";
+                die();
+            } else {
+              echo "<span class='showcase p-2 mb-2 bg-success text-white'>Successfully book the Seat: {$seatName}, Please e-transfer in 24hr for the e-ticket!</span>";
+            }
+          }
+        }
+      }
   }   
 ?>
 <main >
     <h1>DCSSA | 2023春晚订票</h1>
+
+    <h6>若有任何问题请及时与官微联，官方微信号：Dalhousie_DCSSA</h6>
+
+    <!-- <a class="btn btn-primary" href="admin.php" role="button">Admin</a> -->
 
     <!-- <img src="img/img.png" alt="Responsive image">  -->
     
@@ -67,6 +73,12 @@
       </li>
     </ul>
 
+    <div class='frontStage'> 
+      <div class="screen" id='screen1'>Screen</div>
+      <div class="stage">Stage</div>
+      <div class="screen" id='screen2'>Screen</div>
+    </div>
+   
     <table>
         <tbody>
         <tr class="no-border">
@@ -129,7 +141,7 @@
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-secondary" onclick=resetClick()>Reset</button>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+<button type="button" class="btn btn-primary" id="submitButton" data-toggle="modal" data-target="#exampleModal" disabled>
   Submit
 </button>
 
@@ -145,9 +157,10 @@
       </div>
       <form action="" class="" method="post">
         <div class="modal-body">
-            <div class="modal-text mb-3" id="selected-seats">You already seleted Seats: </div>
+            <div class="modal-text mb-2" id="selected-seats">You already seleted Seats: </div>
+            <div class="modal-text mb-3">Total Price: <strong>$<span id="total-price">0</span></strong></div>
             <div class="mb-3">
-              <input class="form-control" name="hiddencontainer" type="text" id="hiddencontainer" disabled required/>
+              <input class="form-control" name="selectedSeats" type="hidden" id="hiddencontainer" required/>
             </div>
             <div class="mb-3">
                 <input class="form-control" name="lname"  type="text" placeholder="Last Name" required>
@@ -165,7 +178,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary" name='submit' id="submit" >Submit</button>
+            <button type="submit" class="btn btn-primary" name='submit'>Submit</button>
         </div>
       </form>
     </div>
