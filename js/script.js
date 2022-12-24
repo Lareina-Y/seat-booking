@@ -17,6 +17,7 @@ function stateHandle() {
 
 // Update total and $count
 function updateSelectedCount() {
+  totalPrice.innerText = total.innerText;
   const selectedSeats = document.querySelectorAll(".seat.selected");
 
   const seatsIndex = [...selectedSeats].map((seat) => seat.id);
@@ -43,11 +44,9 @@ function seatSelected(e, $seatPrice) {
 
     if (e.classList.contains("selected")){
       total.innerText = parseInt(total.innerText) - parseInt($seatPrice);
-      totalPrice.innerText = parseInt(totalPrice.innerText) - parseInt($seatPrice);
       e.classList.remove("selected");
     } else {
       total.innerText = parseInt(total.innerText) + parseInt($seatPrice);
-      totalPrice.innerText = parseInt(totalPrice.innerText) - parseInt($seatPrice);
       e.classList.add("selected");
     }
 
