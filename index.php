@@ -48,7 +48,7 @@
 <main >
     <h1>DCSSA | 2023春晚订票</h1>
 
-    <h6>若有任何问题请及时与官微联，官方微信号：Dalhousie_DCSSA</h6>
+    <h6>若有任何问题请及时与官微联系，官方微信号：Dalhousie_DCSSA</h6>
 
     <!-- <a class="btn btn-primary" href="admin.php" role="button">Admin</a> -->
 
