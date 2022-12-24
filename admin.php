@@ -1,6 +1,44 @@
 <?php
     require_once "includes/header.php";
 
+    /* ================= Admin log in process ==================  */
+
+    session_start(); // start the session
+    $error = false; // use to check if need to show the error message
+
+    if (isset($_POST['a-login'])) {
+
+      // Set some values to the session variable
+      $uname = sanitizeData($_POST['a-uname']); 
+      $l_password = sanitizeData($_POST['a-password']);
+
+      // $hashed_password = password_hash($l_password, PASSWORD_DEFAULT);
+
+      $matchSQL = "SELECT * FROM `dcssaAdmin` WHERE `username` = '{$uname}'";
+      $result = $conn->query($matchSQL);
+
+      if ($result->num_rows > 0){
+        $row = $result->fetch_assoc();
+        $checkPassword = $row['password'];
+
+        if (password_verify($l_password, $checkPassword)) {
+
+          // Regenerate session ID
+          session_regenerate_id(); // --> will not destroy old session
+
+          $_SESSION['role'] = 'admin';
+          $_SESSION['uname'] = $uname;
+
+          $error = false;
+        } else {
+          // if password not matched, then show the error message
+          $error = true;
+        }
+      } else {
+        $error = true;
+      }
+    }
+
     $page = $_GET['tab'] ?? '';
 
     if(isset($_POST['create-table'])){
@@ -37,6 +75,60 @@
 <main>
 
 <h1>Admin</h1>
+<?php
+    if (!isset($_SESSION['role'])) {
+?>
+
+<section class="vh-100">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+          class="img-fluid" alt="Sample image">
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <form method='post'>
+          <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+            <h3 class="fw-normal mb-0 me-3">Sign In</h3>
+          </div>
+
+          <div class="divider d-flex align-items-center my-4"></div>
+
+          <!-- UserName input -->
+          <div class="form-outline mb-4">
+            <input type="text" id="form3Example3" name='a-uname' class="form-control form-control-lg"
+              placeholder="Enter Admin Username" />
+          </div>
+
+          <!-- Password input -->
+          <div class="form-outline mb-3">
+            <input type="password" id="form3Example4" name='a-password' class="form-control form-control-lg"
+              placeholder="Enter password" />
+          </div>
+
+          <!-- show the error message -->
+							<?php
+								if ($error) {
+									// when the user info is not matched...
+									echo "<div class='col-md-12'>" . PHP_EOL;
+									echo "<p class='text-danger'>* Wrong username or password.</p>" . PHP_EOL;
+									echo "</div>" . PHP_EOL;
+								}	
+							?>
+          <div class="text-center text-lg-start mt-4 pt-2">
+            <button type="submit" class="btn btn-primary btn-lg"
+              style="padding-left: 2.5rem; padding-right: 2.5rem;" name='a-login'>Login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<?php
+    } else {
+?>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark showcase mb-5">
   <a class="navbar-brand" href="">Navbar: </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,6 +144,9 @@
       </li>
       <li class="nav-item">
         <a class="btn btn-primary" href="index.php" role="button">Back to User Page</a>
+      </li>
+      <li class="nav-item">
+        <a class="btn btn-primary" href="includes/logout.php" role="button">Log out</a>
       </li>
     </ul>
     <?php
@@ -78,6 +173,8 @@
       include 'includes/bookingList.php';
       break;
   }
+
+}
 
 ?>
   
