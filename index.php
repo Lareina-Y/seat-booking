@@ -164,7 +164,7 @@
                   <input class="form-control" name="lname"  type="text" placeholder="Last Name" required>
               </div>
               <div class="mb-3">
-                  <input class="form-control" name="fname"  type="text" placeholder="Fist Name" required>
+                  <input class="form-control" name="fname"  type="text" placeholder="First Name" required>
               </div>
               <div class="mb-3">
                   <input type="email" class="form-control" name="email" placeholder="Email" required/>
